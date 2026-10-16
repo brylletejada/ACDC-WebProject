@@ -44,7 +44,7 @@ const opportunities = [
     type: "Career search", 
     time: "", 
     title: "Information Technology Server Architect / Cybersecurity", 
-    company: "LinkedIn", 
+    company: "", 
     description: "Example search for server architecture and cybersecurity roles.", 
     source: "LinkedIn", 
     sourceUrl: "https://www.linkedin.com/jobs/search/?keywords=server%20architect%20cybersecurity", 
@@ -53,7 +53,7 @@ const opportunities = [
     type: "Career search", 
     time: "", 
     title: "Software Engineer", 
-    company: "LinkedIn", 
+    company: "", 
     description: "Example search for software engineering roles and entry-level opportunities.", 
     source: "LinkedIn", 
     sourceUrl: "https://www.linkedin.com/jobs/search/?keywords=software%20engineer", 
@@ -62,7 +62,7 @@ const opportunities = [
     type: "Career search", 
     time: "", 
     title: "IT Support Specialist", 
-    company: "Indeed", 
+    company: "", 
     description: "Example search for help desk, technical support, and IT support roles.", 
     source: "Indeed", 
     sourceUrl: "https://www.indeed.com/jobs?q=IT+Support+Specialist", 
@@ -92,7 +92,7 @@ function renderOpportunities(items = opportunities) {
     <article class="opportunity-card" data-id="${item.id}" data-type="opportunity" tabindex="0">
       <div class="opp-type"><span>${item.type}</span><span>${item.time}</span></div>
       <h3>${item.title}</h3><p>${item.description}</p>
-      <div class="opp-footer"><span>${item.company}</span><strong>View details →</strong></div>
+      <div class="opp-footer"><span>${item.company}</span><strong>""</strong></div> /* Changed from "View Details" */
       <a class="source-link" data-external="true" href="${item.sourceUrl}" target="_blank" rel="noopener">View ${item.source} search ↗</a>
     </article>`).join("") : emptyState("No opportunities found. Try software engineer, cybersecurity, or technology.");
 }
