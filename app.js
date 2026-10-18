@@ -42,7 +42,7 @@ const resources = [
 const opportunities = [
   { id: "server-architect", 
     type: "Career search", 
-    time: "LinkedIn reference", 
+    time: "", 
     title: "Information Technology Server Architect / Cybersecurity", 
     company: "LinkedIn", 
     description: "Example search for server architecture and cybersecurity roles.", 
@@ -51,18 +51,18 @@ const opportunities = [
     meta: ["External reference", "Career search"] },
   { id: "software-engineer", 
     type: "Career search", 
-    time: "LinkedIn reference", 
+    time: "LinkedIn", 
     title: "Software Engineer", 
-    company: "LinkedIn", 
+    company: "", 
     description: "Example search for software engineering roles and entry-level opportunities.", 
     source: "LinkedIn", 
     sourceUrl: "https://www.linkedin.com/jobs/search/?keywords=software%20engineer", 
     meta: ["External reference", "Career search"] },
   { id: "it-support", 
     type: "Career search", 
-    time: "Indeed reference", 
-    title: "IT Support Specialist", 
-    company: "Indeed", 
+    time: "", 
+    title: "IT Support Specialist",
+    company: "Indeed",
     description: "Example search for help desk, technical support, and IT support roles.", 
     source: "Indeed", 
     sourceUrl: "https://www.indeed.com/jobs?q=IT+Support+Specialist", 
@@ -92,7 +92,7 @@ function renderOpportunities(items = opportunities) {
     <article class="opportunity-card" data-id="${item.id}" data-type="opportunity" tabindex="0">
       <div class="opp-type"><span>${item.type}</span><span>${item.time}</span></div>
       <h3>${item.title}</h3><p>${item.description}</p>
-      <div class="opp-footer"><span>${item.company}</span><strong>View details →</strong></div>
+      <div class="opp-footer"><span>${item.company}</span><strong>" "</strong></div>
       <a class="source-link" data-external="true" href="${item.sourceUrl}" target="_blank" rel="noopener">View ${item.source} search ↗</a>
     </article>`).join("") : emptyState("No opportunities found. Try software engineer, cybersecurity, or technology.");
 }
