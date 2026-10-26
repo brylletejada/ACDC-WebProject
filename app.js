@@ -3,17 +3,21 @@ const pathways = [
   { id: "technology", 
     icon: "⌘", 
     title: "Technology", 
+    tagline: "Digital skills, data, and AI",
+    recommended: true,
     text: "Build a foundation in digital skills, data, and AI.", 
     meta: ["3 courses", "Beginner-friendly"], 
     details: "A practical introduction to technology for students who want to understand how digital tools, data, and AI shape the world." },
   { id: "business", 
     icon: "↗", 
     title: "Business", 
+    tagline: "Entrepreneurship and leadership",
     text: "Turn ideas into impact through entrepreneurship and leadership.", 
     meta: ["2 courses", "5 weeks"], 
     details: "Explore entrepreneurship, marketing, finance, and leadership through activities that connect classroom ideas to real work." },
   { id: "psychology", 
     icon: "◉", title: "Psychology", 
+    tagline: "People and well-being",
     text: "Understand people, behavior, and the science of well-being.", 
     meta: ["1 course", "Self-paced"], 
     details: "Learn about the history of psychology, neuroscience, and the scientific method while discovering where your curiosity can lead." }
@@ -69,8 +73,28 @@ const opportunities = [
     meta: ["External reference", "Career search"] }
 ];
 
+// Only pathways listed here have a step-by-step journey so far.
+const journeys = {
+  technology: [
+    { title: "Take the course",
+      text: "Start the Technology pathway: three beginner-friendly courses on digital skills, data, and AI.",
+      action: "View course", type: "pathway", id: "technology" },
+    { title: "Build your skills",
+      text: "Try the skills self-check, then use the resume starter kit to show what you can do.",
+      action: "Open self-check", type: "resource", id: "skills" },
+    { title: "Find an internship or job",
+      text: "Look at IT Support Specialist roles, a common first step into technology.",
+      action: "View opportunity", type: "opportunity", id: "it-support", sample: true },
+    { title: "Reach out to a mentor",
+      text: "Ask ACDC for guidance on your resume and what to apply for first.",
+      action: "Find support", scroll: "support" }
+  ]
+};
+
 const savedKey = "acdc-pathways-saved";
+const progressKey = "acdc-pathways-progress";
 let saved = JSON.parse(localStorage.getItem(savedKey) || "[]");
+let progress = JSON.parse(localStorage.getItem(progressKey) || "{}");
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
@@ -94,17 +118,66 @@ function renderOpportunities(items = opportunities) {
       <h3>${item.title}</h3><p>${item.description}</p>
       <div class="opp-footer"><span>${item.company}</span><strong>" "</strong></div>
       <a class="source-link" data-external="true" href="${item.sourceUrl}" target="_blank" rel="noopener">View ${item.source} search ↗</a>
-    </article>`).join("") : emptyState("No opportunities found. Try software engineer, cybersecurity, or technology.");
+    </article>`).join("") : emptyState("No opportunities yet.");
+}
+
+function renderStartButtons() {
+  $("#startButtons").innerHTML = pathways.map(item => {
+    const selected = progress.pathway === item.id;
+    return `
+    <button class="start-button ${item.recommended ? "recommended" : ""} ${selected ? "selected" : ""}" data-pathway="${item.id}" aria-pressed="${selected}">
+      <strong>${item.title}</strong><small>${item.tagline}</small>
+    </button>`;
+  }).join("");
+}
+
+function renderJourney() {
+  $("#journeyGrid").innerHTML = journeys.technology.map((step, index) => `
+    <article class="journey-step">
+      <span class="journey-number">Step ${index + 1}</span>
+      <h3>${step.title}${step.sample ? ` <span class="sample-tag">Sample</span>` : ""}</h3>
+      <p>${step.text}</p>
+      <button class="outline-button" ${step.scroll ? `data-scroll="${step.scroll}"` : `data-type="${step.type}" data-id="${step.id}"`}>${step.action} <span>→</span></button>
+    </article>`).join("");
+}
+
+function renderProgress() {
+  const steps = [Boolean(progress.pathway), Boolean(progress.explored), saved.length > 0];
+  const percent = Math.round(steps.filter(Boolean).length / steps.length * 100);
+  $(".progress-percent").textContent = `${percent}%`;
+  $(".progress-bar span").style.width = `${percent}%`;
+  $$(".progress-step").forEach((step, index) => {
+    step.classList.toggle("done", steps[index]);
+    step.querySelector("span").textContent = steps[index] ? "✓" : index + 1;
+    step.querySelector("small").textContent = steps[index] ? "Completed" : step.dataset.time;
+  });
 }
 
 function emptyState(message) { 
   return `<div class="empty-state" style="grid-column:1/-1;padding:25px;border:1px dashed #cfc2e1;border-radius:10px;color:#5e5a68;background:#fff">${message}</div>`; }
-function updateSavedCount() { 
-  $(".saved-count").textContent = saved.length; }
 function persistSaved() { 
-  localStorage.setItem(savedKey, JSON.stringify(saved)); updateSavedCount(); }
+  localStorage.setItem(savedKey, JSON.stringify(saved)); renderProgress(); }
+function persistProgress() {
+  localStorage.setItem(progressKey, JSON.stringify(progress)); renderStartButtons(); renderProgress(); }
+
+function choosePathway(id) {
+  const item = pathways.find(pathway => pathway.id === id);
+  if (!item) return;
+  progress.pathway = id;
+  persistProgress();
+  if (journeys[id]) {
+    $("#journey").scrollIntoView({ behavior: "smooth", block: "start" });
+    showToast(`${item.title} selected. Here is your journey.`);
+    return;
+  }
+  openDetails({ ...item, details: `${item.details} A step-by-step journey for ${item.title} is coming next. Technology is mapped first.` }, "pathway");
+}
 
 function openDetails(item, type) {
+  if (type === "pathway" && !progress.explored) {
+    progress.explored = true;
+    persistProgress();
+  }
   const title = item.title;
   const description = item.details || item.description || item.text;
   const chips = item.meta || [item.type || "Student resource", item.time || "Explore at your pace"];
@@ -139,19 +212,6 @@ function findItem(id, type) {
   return opportunities.find(item => item.id === id);
 }
 
-function searchAll(query) {
-  const q = query.trim().toLowerCase();
-  if (!q) {
-    renderPathways(); renderResources(); renderOpportunities(); return;
-  }
-  const match = item => Object.values(item).flat().join(" ").toLowerCase().includes(q);
-  renderPathways(pathways.filter(match));
-  renderResources(resources.filter(match));
-  renderOpportunities(opportunities.filter(match));
-  if (pathways.some(match) || resources.some(match) || opportunities.some(match)) showToast(`Showing results for “${query}”`);
-  else showToast("No exact matches yet — try software engineer, cybersecurity, resume, or mentor.");
-}
-
 // Add a short visual pulse to every clicked button or link.
 document.addEventListener("click", event => {
   const clicked = event.target.closest("button, a");
@@ -162,7 +222,7 @@ document.addEventListener("click", event => {
   setTimeout(() => clicked.classList.remove("clicked"), 280);
 }, true);
 
-renderPathways(); renderResources(); renderOpportunities(); updateSavedCount();
+renderStartButtons(); renderJourney(); renderPathways(); renderResources(); renderOpportunities(); renderProgress();
 
 document.addEventListener("click", event => {
   const saveButton = event.target.closest("[data-save]");
@@ -176,29 +236,37 @@ document.addEventListener("click", event => {
     return;
   }
   if (event.target.closest("[data-external]")) return;
+  const pathwayButton = event.target.closest("[data-pathway]");
+  if (pathwayButton) {
+    choosePathway(pathwayButton.dataset.pathway);
+    return;
+  }
+  if (event.target.closest("[data-unsure]")) {
+    $("#resources").scrollIntoView({ behavior: "smooth", block: "start" });
+    openDetails(findItem("skills", "resource"), "resource");
+    return;
+  }
   const card = event.target.closest("[data-type]");
   if (card) {
     const item = findItem(card.dataset.id, card.dataset.type);
     if (item) openDetails(item, card.dataset.type);
     return;
   }
-  const tag = event.target.closest("[data-search]");
-  if (tag) {
-    $("#globalSearch").value = tag.dataset.search;
-    searchAll(tag.dataset.search);
-    $("#globalSearch").scrollIntoView({ behavior: "smooth", block: "center" });
-    return;
-  }
   const scrollTarget = event.target.closest("[data-scroll]");
   if (scrollTarget) document.getElementById(scrollTarget.dataset.scroll)?.scrollIntoView({ behavior: "smooth" });
 });
 
-$("#searchButton").addEventListener("click", () => searchAll($("#globalSearch").value));
-$("#globalSearch").addEventListener("keydown", event => { if (event.key === "Enter") searchAll(event.target.value); });
-$("#resetButton").addEventListener("click", () => { $("#globalSearch").value = ""; renderPathways(); renderResources(); renderOpportunities(); showToast("View reset — ready to explore."); });
-$("#savedButton").addEventListener("click", () => showToast(saved.length ? `You have ${saved.length} saved item${saved.length === 1 ? "" : "s"}.` : "Save a pathway or opportunity to see it here."));
-$("#profileButton").addEventListener("click", () => showToast("Dashboard sign-in is ready for the next project phase."));
-$("#continueButton").addEventListener("click", () => { document.querySelector(".pathway-card")?.scrollIntoView({ behavior: "smooth", block: "center" }); showToast("Choose one pathway to continue your map."); });
+$("#savedButton")?.addEventListener("click", () => showToast(saved.length ? `You have ${saved.length} saved item${saved.length === 1 ? "" : "s"}.` : "Save a pathway or opportunity to see it here."));
+$("#continueButton").addEventListener("click", () => {
+  if (!progress.pathway) {
+    $("#explore").scrollIntoView({ behavior: "smooth" });
+    showToast("Choose where to start first.");
+  } else if (journeys[progress.pathway]) {
+    $("#journey").scrollIntoView({ behavior: "smooth", block: "start" });
+  } else {
+    choosePathway(progress.pathway);
+  }
+});
 $("#supportButton").addEventListener("click", () => showToast("Support directory coming next — mentors, tutoring, and wellness resources will live here."));
 $("#modalClose").addEventListener("click", () => $("#modalBackdrop").hidden = true);
 $("#modalBackdrop").addEventListener("click", event => { if (event.target.id === "modalBackdrop") event.currentTarget.hidden = true; });
