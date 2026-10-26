@@ -20,10 +20,11 @@ python3 -m http.server 8000
 - Open Sans and Montserrat typography with bold, all-caps headings.
 - Responsive desktop and mobile layout.
 - Main navigation for Explore, Learning resources, Opportunities, and Student support.
-- Search across pathways, resources, and opportunities.
+- "Where do you want to start?" pathway buttons in the hero, with Technology recommended and a link to the skills self-check for students who are not sure.
+- A four-step Technology journey: course, build skills, internship or job (sample), and mentor support.
 - Detail modal for pathway, resource, and opportunity cards.
-- Save/bookmark behavior stored in browser local storage.
-- Progress card showing a student career-map journey.
+- Save/bookmark behavior and the chosen pathway stored in browser local storage.
+- Career-map progress card calculated from the student's choices: choose a pathway, explore one pathway, and save something to the plan.
 - Clear pointer cursors, keyboard focus outlines, hover states, and a short click pulse for buttons and links.
 - Prototype career-search cards for Server Architect/Cybersecurity, Software Engineer, and IT Support Specialist.
 - External reference links to LinkedIn and Indeed search pages.
