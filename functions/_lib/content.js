@@ -58,5 +58,6 @@ export const toJourneyStep = row => ({
   type: row.target_type,
   id: row.target_id,
   scroll: row.scroll_target,
+  url: row.action_url,
   sample: Boolean(row.is_sample)
 });

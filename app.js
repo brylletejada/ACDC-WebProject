@@ -50,7 +50,9 @@ function renderJourney() {
       <span class="journey-number">Step ${index + 1}</span>
       <h3>${step.title}${step.sample ? ` <span class="sample-tag">Sample</span>` : ""}</h3>
       <p>${step.text}</p>
-      <button class="outline-button" ${step.scroll ? `data-scroll="${step.scroll}"` : `data-type="${step.type}" data-id="${step.id}"`}>${step.action} <span>→</span></button>
+      ${step.url
+        ? `<a class="outline-button" data-external="true" href="${step.url}" target="_blank" rel="noopener">${step.action} <span>↗</span></a>`
+        : `<button class="outline-button" ${step.scroll ? `data-scroll="${step.scroll}"` : `data-type="${step.type}" data-id="${step.id}"`}>${step.action} <span>→</span></button>`}
     </article>`).join("") : emptyState("The Technology journey is not available right now.");
 }
 
