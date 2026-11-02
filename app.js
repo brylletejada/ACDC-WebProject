@@ -78,7 +78,7 @@ const journeys = {
   technology: [
     { title: "Take the course",
       text: "Start the Technology pathway: three beginner-friendly courses on digital skills, data, and AI.",
-      action: "View course", type: "pathway", id: "technology" },
+      action: "View course", url: "https://acdcco.org/signup" },
     { title: "Build your skills",
       text: "Try the skills self-check, then use the resume starter kit to show what you can do.",
       action: "Open self-check", type: "resource", id: "skills" },
@@ -137,7 +137,9 @@ function renderJourney() {
       <span class="journey-number">Step ${index + 1}</span>
       <h3>${step.title}${step.sample ? ` <span class="sample-tag">Sample</span>` : ""}</h3>
       <p>${step.text}</p>
-      <button class="outline-button" ${step.scroll ? `data-scroll="${step.scroll}"` : `data-type="${step.type}" data-id="${step.id}"`}>${step.action} <span>→</span></button>
+      ${step.url
+        ? `<a class="outline-button" data-external="true" href="${step.url}" target="_blank" rel="noopener">${step.action} <span>↗</span></a>`
+        : `<button class="outline-button" ${step.scroll ? `data-scroll="${step.scroll}"` : `data-type="${step.type}" data-id="${step.id}"`}>${step.action} <span>→</span></button>`}
     </article>`).join("");
 }
 
