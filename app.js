@@ -1,95 +1,8 @@
-// These arrays are simple stand-ins for future database tables.
-const pathways = [
-  { id: "technology", 
-    icon: "⌘", 
-    title: "Technology", 
-    tagline: "Digital skills, data, and AI",
-    recommended: true,
-    text: "Build a foundation in digital skills, data, and AI.", 
-    meta: ["3 courses", "Beginner-friendly"], 
-    details: "A practical introduction to technology for students who want to understand how digital tools, data, and AI shape the world." },
-  { id: "business", 
-    icon: "↗", 
-    title: "Business", 
-    tagline: "Entrepreneurship and leadership",
-    text: "Turn ideas into impact through entrepreneurship and leadership.", 
-    meta: ["2 courses", "5 weeks"], 
-    details: "Explore entrepreneurship, marketing, finance, and leadership through activities that connect classroom ideas to real work." },
-  { id: "psychology", 
-    icon: "◉", title: "Psychology", 
-    tagline: "People and well-being",
-    text: "Understand people, behavior, and the science of well-being.", 
-    meta: ["1 course", "Self-paced"], 
-    details: "Learn about the history of psychology, neuroscience, and the scientific method while discovering where your curiosity can lead." }
-];
-
-const resources = [
-  { id: "resume", 
-    icon: "▤", 
-    title: "Resume starter kit", 
-    text: "Templates and tips for your first resume" },
-  { id: "interview", 
-    icon: "◌", 
-    title: "Interview practice", 
-    text: "Build confidence before the big day" },
-  { id: "college", 
-    icon: "⌂", 
-    title: "College planning guide", 
-    text: "A simple map for your next application" },
-  { id: "skills", 
-    icon: "✦", 
-    title: "Skills self-check", 
-    text: "See what you already bring to the table" }
-];
-
-// Sample search records. LinkedIn reference for now
-const opportunities = [
-  { id: "server-architect", 
-    type: "Career search", 
-    time: "", 
-    title: "Information Technology Server Architect / Cybersecurity", 
-    company: "LinkedIn", 
-    description: "Example search for server architecture and cybersecurity roles.", 
-    source: "LinkedIn", 
-    sourceUrl: "https://www.linkedin.com/jobs/search/?keywords=server%20architect%20cybersecurity", 
-    meta: ["External reference", "Career search"] },
-  { id: "software-engineer", 
-    type: "Career search", 
-    time: "LinkedIn", 
-    title: "Software Engineer", 
-    company: "", 
-    description: "Example search for software engineering roles and entry-level opportunities.", 
-    source: "LinkedIn", 
-    sourceUrl: "https://www.linkedin.com/jobs/search/?keywords=software%20engineer", 
-    meta: ["External reference", "Career search"] },
-  { id: "it-support", 
-    type: "Career search", 
-    time: "", 
-    title: "IT Support Specialist",
-    company: "Indeed",
-    description: "Example search for help desk, technical support, and IT support roles.", 
-    source: "Indeed", 
-    sourceUrl: "https://www.indeed.com/jobs?q=IT+Support+Specialist", 
-    meta: ["External reference", "Career search"] }
-];
-
-// Only pathways listed here have a step-by-step journey so far.
-const journeys = {
-  technology: [
-    { title: "Take the course",
-      text: "Start the Technology pathway: three beginner-friendly courses on digital skills, data, and AI.",
-      action: "View course", type: "pathway", id: "technology" },
-    { title: "Build your skills",
-      text: "Try the skills self-check, then use the resume starter kit to show what you can do.",
-      action: "Open self-check", type: "resource", id: "skills" },
-    { title: "Find an internship or job",
-      text: "Look at IT Support Specialist roles, a common first step into technology.",
-      action: "View opportunity", type: "opportunity", id: "it-support", sample: true },
-    { title: "Reach out to a mentor",
-      text: "Ask ACDC for guidance on your resume and what to apply for first.",
-      action: "Find support", scroll: "support" }
-  ]
-};
+// Content comes from the Cloudflare D1 database through the /api endpoints in functions/.
+let pathways = [];
+let resources = [];
+let opportunities = [];
+let technologyJourney = [];
 
 const savedKey = "acdc-pathways-saved";
 const progressKey = "acdc-pathways-progress";
@@ -132,13 +45,13 @@ function renderStartButtons() {
 }
 
 function renderJourney() {
-  $("#journeyGrid").innerHTML = journeys.technology.map((step, index) => `
+  $("#journeyGrid").innerHTML = technologyJourney.length ? technologyJourney.map((step, index) => `
     <article class="journey-step">
       <span class="journey-number">Step ${index + 1}</span>
       <h3>${step.title}${step.sample ? ` <span class="sample-tag">Sample</span>` : ""}</h3>
       <p>${step.text}</p>
       <button class="outline-button" ${step.scroll ? `data-scroll="${step.scroll}"` : `data-type="${step.type}" data-id="${step.id}"`}>${step.action} <span>→</span></button>
-    </article>`).join("");
+    </article>`).join("") : emptyState("The Technology journey is not available right now.");
 }
 
 function renderProgress() {
@@ -165,7 +78,7 @@ function choosePathway(id) {
   if (!item) return;
   progress.pathway = id;
   persistProgress();
-  if (journeys[id]) {
+  if (item.journeyMapped) {
     $("#journey").scrollIntoView({ behavior: "smooth", block: "start" });
     showToast(`${item.title} selected. Here is your journey.`);
     return;
@@ -222,7 +135,28 @@ document.addEventListener("click", event => {
   setTimeout(() => clicked.classList.remove("clicked"), 280);
 }, true);
 
-renderStartButtons(); renderJourney(); renderPathways(); renderResources(); renderOpportunities(); renderProgress();
+async function getJson(url) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`${url} returned ${response.status}`);
+  return response.json();
+}
+
+async function loadContent() {
+  try {
+    [pathways, resources, opportunities, technologyJourney] = await Promise.all([
+      getJson("/api/pathways"),
+      getJson("/api/resources"),
+      getJson("/api/opportunities"),
+      getJson("/api/pathways/technology/journey")
+    ]);
+  } catch (error) {
+    console.error(error);
+    showToast("We couldn't load pathways right now. Please refresh the page.");
+  }
+  renderStartButtons(); renderJourney(); renderPathways(); renderResources(); renderOpportunities(); renderProgress();
+}
+
+loadContent();
 
 document.addEventListener("click", event => {
   const saveButton = event.target.closest("[data-save]");
@@ -261,7 +195,7 @@ $("#continueButton").addEventListener("click", () => {
   if (!progress.pathway) {
     $("#explore").scrollIntoView({ behavior: "smooth" });
     showToast("Choose where to start first.");
-  } else if (journeys[progress.pathway]) {
+  } else if (findItem(progress.pathway, "pathway")?.journeyMapped) {
     $("#journey").scrollIntoView({ behavior: "smooth", block: "start" });
   } else {
     choosePathway(progress.pathway);

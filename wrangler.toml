@@ -1,0 +1,10 @@
+# Must match the project name in Cloudflare Workers & Pages.
+name = "acdc-webproject"
+pages_build_output_dir = "."
+compatibility_date = "2026-10-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "acdc-pathways"
+# Replace with the ID printed by `npx wrangler d1 create acdc-pathways`.
+database_id = "REPLACE_WITH_DATABASE_ID"
