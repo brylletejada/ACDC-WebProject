@@ -24,9 +24,7 @@
       </nav>
 
       <div class="top-actions">
-        <button class="icon-button" id="savedButton" aria-label="View saved items">
-        </button>
-        <button class="profile-button" id="profileButton"><span class="avatar">BG</span><span class="profile-name">My dashboard</span><span class="chevron">⌄</span></button>
+        <button class="icon-button" id="savedButton" aria-label="View saved items"></button>
       </div>
     </header>
 
@@ -37,13 +35,10 @@
           <p class="eyebrow light"><span class="eyebrow-dot"></span> Access. Community. Diversity. Continuous learning.</p>
           <h1>Find a path that<br /><em>feels like you.</em></h1>
           <p class="hero-text">Explore careers, build practical skills, and connect with opportunities that move you forward.</p>
-          <div class="search-wrap hero-search">
-            <span class="search-symbol">⌕</span>
-            <input id="globalSearch" type="search" placeholder="Search careers, courses, internships..." autocomplete="off" />
-            <button id="searchButton" class="search-button">Search</button>
-          </div>
-          <div class="hero-tags" aria-label="Popular searches">
-            <span>Popular:</span><button class="tag-link" data-search="technology">Technology</button><button class="tag-link" data-search="business">Business</button><button class="tag-link" data-search="Psychology">Psychology</button>
+          <div class="pathway-start" role="group" aria-labelledby="startLabel">
+            <p class="start-label" id="startLabel">Where do you want to start?</p>
+            <div class="start-buttons" id="startButtons"></div>
+            <button class="start-unsure" data-unsure="true">Not sure? Take the skills self-check <span>→</span></button>
           </div>
         </div>
         <div class="hero-art" aria-label="ACDC logo and connected opportunities"> 
@@ -53,14 +48,12 @@
       </section>
 
       <section class="content-shell">
-        <div class="welcome-row">
-          <div>
-            <p class="eyebrow"><span class="eyebrow-dot"></span> Student hub</p>
-            <h2>Good morning, Brylle <span class="wave">✦</span></h2>
-            <p class="muted">A little progress today can open a big door tomorrow.</p>
+        <section class="section-block journey-section" id="journey" aria-labelledby="journey-heading">
+          <div class="section-heading">
+            <div><p class="eyebrow">Recommended first pathway</p><h2 id="journey-heading">Your Technology journey</h2><p class="muted">Four steps from learning the basics to talking with a mentor.</p></div>
           </div>
-          <button class="text-button" id="resetButton">Reset view <span>↗</span></button>
-        </div>
+          <div class="journey-grid" id="journeyGrid"></div>
+        </section>
 
         <section class="section-block" aria-labelledby="pathways-heading">
           <div class="section-heading">
@@ -72,18 +65,18 @@
 
         <div class="two-column">
           <section class="section-block compact-section" id="resources" aria-labelledby="resources-heading">
-            <div class="section-heading"><div><p class="eyebrow">Build your skills</p><h2 id="resources-heading">Learning resources</h2></div><button class="round-arrow" data-scroll="resources" aria-label="See more learning resources">→</button></div>
+            <div class="section-heading"><div><p class="eyebrow">Build your skills</p><h2 id="resources-heading">Learning resources</h2></div></div>
             <div class="resource-list" id="resourceList"></div>
           </section>
 
           <aside class="progress-card">
-            <div class="progress-card-header"><span class="eyebrow light">Your progress</span><span class="progress-percent">28%</span></div>
+            <div class="progress-card-header"><span class="eyebrow light">Your progress</span><span class="progress-percent">0%</span></div>
             <h3>Build your career map</h3>
             <p>Complete a few quick steps to get recommendations made for you.</p>
-            <div class="progress-bar"><span style="width: 28%"></span></div>
-            <div class="progress-step done"><span>✓</span><div><strong>Tell us about your interests</strong><small>Completed</small></div></div>
-            <div class="progress-step"><span>2</span><div><strong>Explore one pathway</strong><small>5 min</small></div></div>
-            <div class="progress-step"><span>3</span><div><strong>Save an opportunity</strong><small>2 min</small></div></div>
+            <div class="progress-bar"><span style="width: 0%"></span></div>
+            <div class="progress-step" data-time="1 min"><span>1</span><div><strong>Choose a pathway</strong><small>1 min</small></div></div>
+            <div class="progress-step" data-time="5 min"><span>2</span><div><strong>Explore one pathway</strong><small>5 min</small></div></div>
+            <div class="progress-step" data-time="2 min"><span>3</span><div><strong>Save something to your plan</strong><small>2 min</small></div></div>
             <button class="light-button" id="continueButton">Continue my map <span>→</span></button>
           </aside>
         </div>
