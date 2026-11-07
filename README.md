@@ -61,6 +61,7 @@ Add a new numbered migration instead of editing applied ones, for example `migra
 - Main navigation for Explore, Learning resources, Opportunities, and Student support.
 - "Where do you want to start?" pathway buttons in the hero, with Technology recommended and a link to the skills self-check for students who are not sure.
 - A four-step Technology journey: course, build skills, internship or job (sample), and mentor support.
+- Skills self-check page (`self-check.html`, `self-check.js`): a 10-question quiz that suggests Technology, Business, or Psychology, shows how the answers matched each pathway, and saves the result in browser local storage. Edit the questions in the `questions` list at the top of `self-check.js`; each question needs exactly one answer per pathway.
 - Detail modal for pathway, resource, and opportunity cards.
 - Save/bookmark behavior and the chosen pathway stored in browser local storage.
 - Career-map progress card calculated from the student's choices: choose a pathway, explore one pathway, and save something to the plan.

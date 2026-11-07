@@ -242,13 +242,12 @@ document.addEventListener("click", event => {
     choosePathway(pathwayButton.dataset.pathway);
     return;
   }
-  if (event.target.closest("[data-unsure]")) {
-    $("#resources").scrollIntoView({ behavior: "smooth", block: "start" });
-    openDetails(findItem("skills", "resource"), "resource");
-    return;
-  }
   const card = event.target.closest("[data-type]");
   if (card) {
+    if (card.dataset.type === "resource" && card.dataset.id === "skills") {
+      window.location.href = "self-check.html";
+      return;
+    }
     const item = findItem(card.dataset.id, card.dataset.type);
     if (item) openDetails(item, card.dataset.type);
     return;
