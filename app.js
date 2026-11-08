@@ -35,7 +35,29 @@ document.addEventListener("click", event => {
   if (placeholder) showToast("S.Majors is a placeholder for future major pages.");
 });
 
-$("#profileButton").addEventListener("click", () => showToast("Dashboard sign-in is ready for the next project phase."));
+const profileButton = $("#profileButton");
+const dashboardMenu = $("#dashboardMenu");
+
+function setDashboardMenuOpen(open) {
+  dashboardMenu.hidden = !open;
+  profileButton.setAttribute("aria-expanded", String(open));
+}
+
+profileButton.addEventListener("click", event => {
+  event.stopPropagation();
+  setDashboardMenuOpen(dashboardMenu.hidden);
+});
+
+document.addEventListener("click", event => {
+  if (!event.target.closest(".dashboard-menu-wrap")) setDashboardMenuOpen(false);
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && !dashboardMenu.hidden) {
+    setDashboardMenuOpen(false);
+    profileButton.focus();
+  }
+});
 
 // Add a short visual pulse so every clicked button or link gives feedback.
 document.addEventListener("click", event => {
