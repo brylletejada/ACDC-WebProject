@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Create your ACDC student hub account." />
+    <title>Create an account | ACDC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="auth-page">
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="ACDC home"><img class="brand-logo" src="assets/acdc-logo-primary.png" alt="Asian Community Development Center" /></a>
+      <a class="auth-button auth-button-outline" href="login.html">Sign in</a>
+    </header>
+    <main class="auth-main">
+      <section class="auth-card" aria-labelledby="auth-title">
+        <a class="auth-back" href="index.html">← Back to home</a>
+        <p class="eyebrow">Join ACDC</p>
+        <h1 id="auth-title">Create your account</h1>
+        <p class="auth-intro">Set up your account to save pathways and keep track of opportunities.</p>
+        <form class="auth-form" action="#" method="post" data-auth-mode="register">
+          <label for="name">Full name</label>
+          <input id="name" name="name" type="text" autocomplete="name" placeholder="Your full name" required />
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+          <label for="password">Create a password</label>
+          <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" pattern="(?=.*[A-Za-z])(?=.*[0-9]).{8,}" title="Use at least 8 characters, including at least one letter and one number." aria-describedby="password-help" placeholder="At least 8 characters" required />
+          <small class="password-help" id="password-help">Use at least 8 characters, including at least one letter and one number.</small>
+          <button class="auth-submit" type="submit">Create account</button>
+          <p class="auth-feedback" aria-live="polite"></p>
+        </form>
+        <p class="auth-switch">Already have an account? <a href="login.html">Sign in</a></p>
+      </section>
+      <aside class="auth-aside">
+        <img src="assets/acdc-logo-light.png" alt="" />
+        <p class="eyebrow light">Access. Community. Diversity.</p>
+        <h2>Make room for what’s next.</h2>
+        <p>Build a path that fits your interests with learning resources and opportunities from the ACDC community.</p>
+      </aside>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth.js"></script>
+  </body>
+</html>

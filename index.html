@@ -24,13 +24,8 @@
       </nav>
 
       <div class="top-actions">
-        <div class="dashboard-menu-wrap">
-          <button class="profile-button" id="profileButton" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="dashboardMenu"><span class="avatar">BG</span><span class="profile-name">My dashboard</span></button>
-          <div class="dashboard-menu" id="dashboardMenu" role="menu" hidden>
-            <a class="dashboard-menu-link" href="#register" role="menuitem">Register</a>
-            <a class="dashboard-menu-link" href="#sign-in" role="menuitem">Sign in</a>
-          </div>
-        </div>
+        <a class="auth-button auth-button-primary" href="register.html">Register</a>
+        <a class="auth-button auth-button-outline" href="login.html">Sign in</a>
       </div>
     </header>
 
@@ -116,6 +111,9 @@
       <div class="footer-bottom"><p>© Asian Community Development Center 2026</p><!-- <span>ACDC</span><p>Asian Community Development Center (ACDC) is a DBA of Asian Pacific and Korean Business Organization Inc., a federally recognized 501(c)(3) nonprofit organization (EIN: 92-3144739). Contributions are tax-deductible to the extent permitted by law.</p>--></div></footer>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="session.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
