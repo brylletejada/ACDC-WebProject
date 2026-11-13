@@ -9,6 +9,10 @@ function showFeedback(message, isError = false) {
   feedback.classList.add("is-visible");
 }
 
+if (new URLSearchParams(window.location.search).get("reset") === "success") {
+  showFeedback("Your password has been updated. Sign in with your new password.");
+}
+
 if (supabaseClient) {
   supabaseClient.auth.getSession().then(({ data }) => {
     if (data.session) window.location.replace("index.html");

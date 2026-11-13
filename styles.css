@@ -134,6 +134,11 @@ h1, h2, h3 { text-transform: uppercase; }
 .auth-switch { margin: 22px 0 0; color: var(--muted); text-align: center; font-size: 12px; }
 .auth-switch a { color: var(--purple); font-weight: 700; }
 .auth-switch a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.auth-forgot { justify-self: end; color: var(--purple); font-size: 12px; font-weight: 700; }
+.auth-forgot:hover, .auth-link-button:hover { text-decoration: underline; text-underline-offset: 3px; }
+.auth-link-button { padding: 0; border: 0; background: none; color: var(--purple); font: inherit; font-weight: 700; cursor: pointer; }
+.auth-link-button:disabled { opacity: .6; cursor: wait; }
+.reset-step[hidden] { display: none; }
 .auth-aside { position: relative; min-height: 430px; display: flex; flex-direction: column; justify-content: center; overflow: hidden; padding: 48px; border-radius: 18px; color: var(--white); background: radial-gradient(circle at 85% 12%, rgba(203,108,230,.55), transparent 32%), linear-gradient(145deg, var(--purple), var(--blue)); box-shadow: var(--shadow); }
 .auth-aside:after { content: ""; position: absolute; right: -100px; bottom: -145px; width: 330px; height: 330px; border: 1px solid rgba(255,255,255,.25); border-radius: 50%; }
 .auth-aside img { width: 94px; height: 94px; margin-bottom: 35px; object-fit: contain; }
