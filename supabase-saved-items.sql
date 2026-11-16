@@ -37,3 +37,7 @@ create policy "Users can delete own saved items"
   on public.saved_items
   for delete
   using (auth.uid() = user_id);
+
+-- Required so signed-in users can use the table from the website.
+grant usage on schema public to authenticated;
+grant select, insert, delete on table public.saved_items to authenticated;
