@@ -40,6 +40,16 @@ button:active, a:active { transform: translateY(1px); }
 .auth-button-outline { color: #8b3ff0; background: var(--white); }
 .auth-button-outline:hover { background: #f2ecff; }
 .user-greeting { color: var(--purple); font-size: 13px; font-weight: 700; white-space: nowrap; }
+.user-menu { position: relative; }
+.user-menu-trigger { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border: 2px solid #8b3ff0; border-radius: 9px; color: #8b3ff0; background: var(--white); font-size: 13px; font-weight: 700; white-space: nowrap; transition: .2s ease; }
+.user-menu-trigger:hover, .user-menu.is-open .user-menu-trigger { background: #f2ecff; }
+.user-menu-caret { font-size: 11px; line-height: 1; transition: transform .2s ease; }
+.user-menu.is-open .user-menu-caret { transform: rotate(180deg); }
+.user-menu-panel { position: absolute; top: calc(100% + 8px); right: 0; z-index: 30; min-width: 168px; padding: 8px; border: 1px solid var(--line); border-radius: 12px; background: var(--white); box-shadow: var(--shadow); }
+.user-menu-item { display: block; width: 100%; padding: 11px 12px; border: 0; border-radius: 8px; background: transparent; color: var(--purple); font: inherit; font-size: 13px; font-weight: 700; text-align: left; transition: .15s ease; }
+.user-menu-item:hover { background: #f2ecff; }
+.user-menu-signout { color: #b42318; }
+.user-menu-signout:hover { background: #fff1f0; }
 .icon-button { display: flex; gap: 4px; align-items: center; border: 0; background: transparent; color: var(--ink); font-size: 21px; transition: .2s ease; }
 .icon-button:hover { color: var(--purple); }
 .saved-count { font-size: 11px; color: var(--magenta); font-weight: 700; }
