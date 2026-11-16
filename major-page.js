@@ -68,21 +68,64 @@ const majorData = {
 const $ = selector => document.querySelector(selector);
 const pageKey = document.body.dataset.major;
 const major = majorData[pageKey];
+const majorPageFile = {
+  informationTechnology: "information-technology.html",
+  business: "business.html",
+  computerScience: "computer-science.html"
+}[pageKey];
+
+let currentUser = null;
+let savedKeys = new Set();
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+function saveButtonMarkup(itemKey, isSaved) {
+  const label = isSaved ? "Remove bookmark" : "Save bookmark";
+  const mark = isSaved ? "♥" : "♡";
+  return `<button class="save-button${isSaved ? " saved" : ""}" type="button" data-item-key="${escapeHtml(itemKey)}" aria-label="${label}" aria-pressed="${isSaved}">${mark}</button>`;
+}
 
 function renderPage() {
   document.title = `ACDC | ${major.title}`;
   $("#majorTitle").textContent = major.title;
   $("#majorIntro").textContent = major.intro;
-  $("#majorTags").innerHTML = major.tags.map(tag => `<span class="major-tag">${tag}</span>`).join("");
-  $("#pathwayGrid").innerHTML = major.pathways.map(item => `
-    <article class="pathway-card major-pathway-card">
-      <div class="card-top"><span class="card-icon">${item.icon}</span><span class="card-index">PATHWAY</span></div>
-      <h3>${item.title}</h3><p>${item.text}</p><div class="card-meta"><span>${item.meta[0]}</span><span>·</span><span>${item.meta[1]}</span></div>
-    </article>`).join("");
-  $("#resourceList").innerHTML = major.resources.map(item => `
-    <article class="resource-item"><span class="resource-thumb">${item.icon}</span><div><h3>${item.title}</h3><p>${item.text}</p></div><span class="resource-arrow">→</span></article>`).join("");
-  $("#opportunityGrid").innerHTML = major.opportunities.map(item => `
-    <article class="opportunity-card"><h3>${item.title}</h3><p>${item.description}</p><a class="source-link" href="${item.sourceUrl}" target="_blank" rel="noopener">View ${item.source} search ↗</a></article>`).join("");
+  $("#majorTags").innerHTML = major.tags.map(tag => `<span class="major-tag">${escapeHtml(tag)}</span>`).join("");
+
+  $("#pathwayGrid").innerHTML = major.pathways.map(item => {
+    const itemKey = buildItemKey(pageKey, "pathway", item.title);
+    return `
+    <article class="pathway-card major-pathway-card" data-item-type="pathway" data-title="${escapeHtml(item.title)}" data-description="${escapeHtml(item.text)}">
+      <div class="card-top"><span class="card-icon">${item.icon}</span>${saveButtonMarkup(itemKey, savedKeys.has(itemKey))}</div>
+      <h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p><div class="card-meta"><span>${escapeHtml(item.meta[0])}</span><span>·</span><span>${escapeHtml(item.meta[1])}</span></div>
+    </article>`;
+  }).join("");
+
+  $("#resourceList").innerHTML = major.resources.map(item => {
+    const itemKey = buildItemKey(pageKey, "resource", item.title);
+    return `
+    <article class="resource-item" data-item-type="resource" data-title="${escapeHtml(item.title)}" data-description="${escapeHtml(item.text)}">
+      <span class="resource-thumb">${item.icon}</span>
+      <div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></div>
+      ${saveButtonMarkup(itemKey, savedKeys.has(itemKey))}
+    </article>`;
+  }).join("");
+
+  $("#opportunityGrid").innerHTML = major.opportunities.map(item => {
+    const itemKey = buildItemKey(pageKey, "opportunity", item.title);
+    return `
+    <article class="opportunity-card" data-item-type="opportunity" data-title="${escapeHtml(item.title)}" data-description="${escapeHtml(item.description)}" data-source-url="${escapeHtml(item.sourceUrl)}">
+      <div class="opp-type"><span>${escapeHtml(item.type)}</span>${saveButtonMarkup(itemKey, savedKeys.has(itemKey))}</div>
+      <h3>${escapeHtml(item.title)}</h3>
+      <p>${escapeHtml(item.description)}</p>
+      <a class="source-link" href="${escapeHtml(item.sourceUrl)}" target="_blank" rel="noopener">View ${escapeHtml(item.source)} search ↗</a>
+    </article>`;
+  }).join("");
 }
 
 function showToast(message) {
@@ -93,10 +136,93 @@ function showToast(message) {
   showToast.timer = setTimeout(() => toast.classList.remove("show"), 2600);
 }
 
-renderPage();
+function setSaveButtonState(button, isSaved) {
+  button.classList.toggle("saved", isSaved);
+  button.setAttribute("aria-pressed", String(isSaved));
+  button.setAttribute("aria-label", isSaved ? "Remove bookmark" : "Save bookmark");
+  button.textContent = isSaved ? "♥" : "♡";
+}
+
+async function toggleBookmark(button) {
+  if (!supabaseClient) {
+    showToast("Bookmarks aren't set up yet. Add your Supabase project details first.");
+    return;
+  }
+
+  if (!currentUser) {
+    showToast("Sign in to save bookmarks.");
+    requireSignIn(majorPageFile);
+    return;
+  }
+
+  const card = button.closest("[data-item-type]");
+  const itemKey = button.dataset.itemKey;
+  const isSaved = savedKeys.has(itemKey);
+  button.disabled = true;
+
+  try {
+    if (isSaved) {
+      await removeBookmark(currentUser.id, itemKey);
+      savedKeys.delete(itemKey);
+      setSaveButtonState(button, false);
+      showToast("Removed from your saved list.");
+    } else {
+      await saveBookmark({
+        user_id: currentUser.id,
+        item_type: card.dataset.itemType,
+        item_key: itemKey,
+        major_key: pageKey,
+        major_title: major.title,
+        title: card.dataset.title,
+        description: card.dataset.description || "",
+        source_url: card.dataset.sourceUrl || null
+      });
+      savedKeys.add(itemKey);
+      setSaveButtonState(button, true);
+      showToast("Saved to your list.");
+    }
+  } catch (error) {
+    const missingTable = /relation .*saved_items.* does not exist|Could not find the table/i.test(error.message || "");
+    showToast(
+      missingTable
+        ? "Bookmarks table is missing. Run supabase-saved-items.sql in Supabase."
+        : error.message || "Couldn't update that bookmark."
+    );
+  } finally {
+    button.disabled = false;
+  }
+}
+
+async function initBookmarks() {
+  renderPage();
+
+  currentUser = await getCurrentUser();
+  if (currentUser) {
+    try {
+      savedKeys = await fetchSavedKeys(currentUser.id);
+      renderPage();
+    } catch (error) {
+      const missingTable = /relation .*saved_items.* does not exist|Could not find the table/i.test(error.message || "");
+      if (missingTable) {
+        showToast("Bookmarks table is missing. Run supabase-saved-items.sql in Supabase.");
+      }
+    }
+  }
+}
+
+initBookmarks();
 
 $("#supportButton").addEventListener("click", () => showToast("Support directory coming next — mentors, tutoring, and wellness resources will live here."));
+
 document.addEventListener("click", event => {
+  const saveButton = event.target.closest(".save-button");
+  if (saveButton) {
+    event.preventDefault();
+    event.stopPropagation();
+    toggleBookmark(saveButton);
+    return;
+  }
+
   const clicked = event.target.closest("button, a");
   if (!clicked) return;
   clicked.classList.remove("clicked");

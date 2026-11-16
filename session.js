@@ -1,4 +1,4 @@
-// Swaps the Register and Sign in buttons for a greeting and Sign out button when someone is signed in.
+// Swaps the Register and Sign in buttons for Saved, a greeting, and Sign out when someone is signed in.
 async function renderAuthHeader() {
   const actions = document.querySelector(".top-actions");
   if (!actions || !supabaseClient) return;
@@ -8,6 +8,11 @@ async function renderAuthHeader() {
 
   const user = data.session.user;
   const name = user.user_metadata.full_name || user.email;
+
+  const savedLink = document.createElement("a");
+  savedLink.className = "auth-button auth-button-outline";
+  savedLink.href = "saved.html";
+  savedLink.textContent = "Saved";
 
   const greeting = document.createElement("span");
   greeting.className = "user-greeting";
@@ -22,7 +27,7 @@ async function renderAuthHeader() {
     window.location.reload();
   });
 
-  actions.replaceChildren(greeting, signOutButton);
+  actions.replaceChildren(savedLink, greeting, signOutButton);
 }
 
 renderAuthHeader();

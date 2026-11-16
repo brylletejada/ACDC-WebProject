@@ -58,5 +58,7 @@ authForm.addEventListener("submit", async event => {
     return;
   }
 
-  window.location.href = "index.html";
+  const next = new URLSearchParams(window.location.search).get("next");
+  const safeNext = next && !next.includes("://") && !next.startsWith("/") ? next : "index.html";
+  window.location.href = safeNext;
 });
