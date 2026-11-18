@@ -29,17 +29,19 @@ python3 -m http.server 8000
 
 ## Main files
 
+- `css/styles.css` contains the shared ACDC branding and responsive layout.
+- `js/` contains the browser scripts, including page-specific behavior and Supabase configuration.
+- `database/supabase-saved-items.sql` contains the saved-items database setup.
 - `index.html` is the homepage and major selector.
 - `information-technology.html` is the Information Technology page.
 - `business.html` is the Business page.
 - `computer-science.html` is the Computer Science page.
-- `major-page.js` contains the major-specific data and renders each major page.
-- `app.js` controls the homepage major carousel.
-- `styles.css` contains the shared ACDC branding and responsive layout.
+- `assets/` contains the site's images and logos.
+- `Diagrams/` contains project diagrams.
 
 ## Suggested next implementation step
 
-Replace the data object at the top of `major-page.js` with API/database data. A simple first version of the database can use five core tables: `users`, `pathways`, `resources`, `opportunities`, and `saved_items`. The `pathways` table can connect to many resources and opportunities through join tables such as `pathway_resources` and `pathway_opportunities`.
+Replace the data object at the top of `js/major-page.js` with API/database data. A simple first version of the database can use five core tables: `users`, `pathways`, `resources`, `opportunities`, and `saved_items`. The `pathways` table can connect to many resources and opportunities through join tables such as `pathway_resources` and `pathway_opportunities`.
 
 The external career cards are intentionally sample records. They link to public search pages instead of scraping a website in the browser. For a production version, use an approved API or a server-side integration and follow each service's terms and privacy rules.
 
