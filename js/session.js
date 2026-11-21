@@ -1,4 +1,4 @@
-// Replaces Register / Sign in with a name menu that opens Saved and Sign out.
+// Replaces Register / Sign in with a name menu for Profile, Saved, and Sign out.
 async function renderAuthHeader() {
   const actions = document.querySelector(".top-actions");
   if (!actions || !supabaseClient) return;
@@ -24,6 +24,7 @@ async function renderAuthHeader() {
   panel.className = "user-menu-panel";
   panel.hidden = true;
   panel.innerHTML = `
+    <a class="user-menu-item" href="profile.html">Profile</a>
     <a class="user-menu-item" href="saved.html">Saved</a>
     <button class="user-menu-item user-menu-signout" type="button">Sign out</button>
   `;

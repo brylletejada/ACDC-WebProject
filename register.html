@@ -35,6 +35,10 @@
           <label for="birthdate">Birthdate</label>
           <input id="birthdate" name="birthdate" type="date" autocomplete="bday" required aria-describedby="birthdate-help" />
           <small class="password-help" id="birthdate-help">You must be at least 14 years old to create an account.</small>
+          <label for="state">State</label>
+          <select id="state" name="state" required>
+            <option value="">Select your state</option>
+          </select>
           <label for="email">Email address</label>
           <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
           <label for="password">Create a password</label>
@@ -54,6 +58,7 @@
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-config.js"></script>
+    <script src="js/profile-options.js"></script>
     <script src="js/auth.js"></script>
   </body>
 </html>

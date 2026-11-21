@@ -32,6 +32,7 @@ if (isRegister) {
   if (birthdateInput) {
     birthdateInput.max = getMaxBirthdate();
   }
+  fillStateSelect(authForm.querySelector("#state"));
 }
 
 if (new URLSearchParams(window.location.search).get("reset") === "success") {
@@ -60,6 +61,7 @@ authForm.addEventListener("submit", async event => {
     const firstName = String(formData.get("first_name") || "").trim();
     const lastName = String(formData.get("last_name") || "").trim();
     const birthdate = String(formData.get("birthdate") || "").trim();
+    const state = String(formData.get("state") || "").trim();
 
     if (!firstName || !lastName) {
       showFeedback("Please enter your first and last name.", true);
@@ -68,6 +70,11 @@ authForm.addEventListener("submit", async event => {
 
     if (!isAtLeastMinAge(birthdate)) {
       showFeedback(`You must be at least ${MIN_AGE} years old to create an account.`, true);
+      return;
+    }
+
+    if (!state) {
+      showFeedback("Please select your state.", true);
       return;
     }
   }
@@ -84,7 +91,9 @@ authForm.addEventListener("submit", async event => {
             first_name: String(formData.get("first_name") || "").trim(),
             last_name: String(formData.get("last_name") || "").trim(),
             full_name: `${String(formData.get("first_name") || "").trim()} ${String(formData.get("last_name") || "").trim()}`.trim(),
-            birthdate: String(formData.get("birthdate") || "").trim()
+            birthdate: String(formData.get("birthdate") || "").trim(),
+            state: String(formData.get("state") || "").trim(),
+            major: ""
           },
           emailRedirectTo: new URL("index.html", window.location.href).href
         }
