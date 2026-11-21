@@ -1,0 +1,19 @@
+# Keep developer / source files off the public Workers site
+README.md
+wrangler.jsonc
+wrangler.toml
+.gitignore
+.assetsignore
+.git/
+.wrangler/
+node_modules/
+package.json
+package-lock.json
+database/
+Diagrams/
+diagrams/
+**/*.sql
+**/*.md
+**/*.drawio
+**/*.drawio.png
+**/*.drawio.svg

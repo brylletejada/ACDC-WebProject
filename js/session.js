@@ -7,8 +7,8 @@ async function renderAuthHeader() {
   if (!data.session) return;
 
   const user = data.session.user;
-  const name = user.user_metadata.full_name || user.email;
-  const firstName = name.split(" ")[0];
+  const meta = user.user_metadata || {};
+  const firstName = meta.first_name || (meta.full_name || user.email || "").split(" ")[0];
 
   const menu = document.createElement("div");
   menu.className = "user-menu";

@@ -13,6 +13,14 @@ python3 -m http.server 8000
 
 3. Visit `http://localhost:8000`.
 
+## Deploy to Cloudflare Workers
+
+This project uses `wrangler.jsonc` plus `.assetsignore` so only the public site files are uploaded (HTML, CSS, JS, and `assets/`). Developer files such as `README.md`, `database/`, and `Diagrams/` stay off the live site.
+
+```bash
+npx wrangler deploy
+```
+
 ## Current prototype features
 
 - ACDC brand colors from the supplied guide: `#45147c`, `#8d198f`, `#cb6ce6`, `#2C3892`, `#9d5ee5`, and `#DBCCFF`.

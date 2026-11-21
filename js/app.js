@@ -14,21 +14,40 @@ function showToast(message) {
   showToast.timer = setTimeout(() => toast.classList.remove("show"), 2600);
 }
 
-function getSlideStep() {
-  const firstCard = choices[0];
-  const gap = parseInt(getComputedStyle(track).gap, 10) || 16;
-  return firstCard.getBoundingClientRect().width + gap;
+function getCardScrollLeft(index) {
+  const card = choices[index];
+  return card.getBoundingClientRect().left - viewport.getBoundingClientRect().left + viewport.scrollLeft;
+}
+
+function getMaxIndex() {
+  const maxScroll = Math.max(0, track.scrollWidth - viewport.clientWidth);
+  let maxIndex = 0;
+  for (let i = 0; i < choices.length; i++) {
+    if (getCardScrollLeft(i) <= maxScroll + 1) maxIndex = i;
+  }
+  return maxIndex;
+}
+
+function scrollToCard(index, behavior = "smooth") {
+  const maxScroll = Math.max(0, track.scrollWidth - viewport.clientWidth);
+  const left = Math.min(Math.max(0, getCardScrollLeft(index)), maxScroll);
+  viewport.scrollTo({ left, behavior });
 }
 
 function updateCarousel(direction) {
-  const maxIndex = Math.max(0, Math.ceil((track.scrollWidth - viewport.clientWidth) / getSlideStep()));
-  currentIndex = Math.max(0, Math.min(currentIndex + direction, maxIndex));
-  viewport.scrollTo({ left: currentIndex * getSlideStep(), behavior: "smooth" });
+  currentIndex = Math.max(0, Math.min(currentIndex + direction, getMaxIndex()));
+  scrollToCard(currentIndex);
   $("#majorPosition").textContent = `Showing option ${currentIndex + 1} of ${choices.length}`;
 }
 
 $("#majorPrev").addEventListener("click", () => updateCarousel(-1));
 $("#majorNext").addEventListener("click", () => updateCarousel(1));
+
+window.addEventListener("resize", () => {
+  currentIndex = Math.max(0, Math.min(currentIndex, getMaxIndex()));
+  scrollToCard(currentIndex, "auto");
+  $("#majorPosition").textContent = `Showing option ${currentIndex + 1} of ${choices.length}`;
+});
 
 document.addEventListener("click", event => {
   const placeholder = event.target.closest("[data-placeholder]");

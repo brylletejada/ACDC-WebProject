@@ -22,13 +22,24 @@
         <h1 id="auth-title">Create your account</h1>
         <p class="auth-intro">Set up your account to save pathways and keep track of opportunities.</p>
         <form class="auth-form" action="#" method="post" data-auth-mode="register">
-          <label for="name">Full name</label>
-          <input id="name" name="name" type="text" autocomplete="name" placeholder="Your full name" required />
+          <div class="auth-name-row">
+            <div>
+              <label for="first-name">First name</label>
+              <input id="first-name" name="first_name" type="text" autocomplete="given-name" placeholder="First name" required />
+            </div>
+            <div>
+              <label for="last-name">Last name</label>
+              <input id="last-name" name="last_name" type="text" autocomplete="family-name" placeholder="Last name" required />
+            </div>
+          </div>
+          <label for="birthdate">Birthdate</label>
+          <input id="birthdate" name="birthdate" type="date" autocomplete="bday" required aria-describedby="birthdate-help" />
+          <small class="password-help" id="birthdate-help">You must be at least 14 years old to create an account.</small>
           <label for="email">Email address</label>
           <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
           <label for="password">Create a password</label>
-          <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" pattern="(?=.*[A-Za-z])(?=.*[0-9]).{8,}" title="Use at least 8 characters, including at least one letter and one number." aria-describedby="password-help" placeholder="At least 8 characters" required />
-          <small class="password-help" id="password-help">Use at least 8 characters, including at least one letter and one number.</small>
+          <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" pattern="(?=.*[A-Z])(?=.*[0-9]).{8,}" title="Use at least 8 characters, including at least one uppercase letter and one number." aria-describedby="password-help" placeholder="At least 8 characters" required />
+          <small class="password-help" id="password-help">Use at least 8 characters, including at least one uppercase letter and one number.</small>
           <button class="auth-submit" type="submit">Create account</button>
           <p class="auth-feedback" aria-live="polite"></p>
         </form>
