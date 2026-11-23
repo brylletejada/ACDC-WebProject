@@ -16,6 +16,16 @@ const MAJOR_OPTIONS = [
   { value: "computerScience", label: "Computer Science" }
 ];
 
+const INTEREST_OPTIONS = [
+  { id: "informationTechnology", kind: "major", label: "Information Technology" },
+  { id: "business", kind: "major", label: "Business" },
+  { id: "computerScience", kind: "major", label: "Computer Science" }
+];
+
+function getInterestOption(id) {
+  return INTEREST_OPTIONS.find(option => option.id === id) || null;
+}
+
 function fillStateSelect(selectEl, selectedValue = "") {
   if (!selectEl) return;
   selectEl.innerHTML = `<option value="">Select your state</option>` +

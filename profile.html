@@ -43,44 +43,59 @@
               <h2 id="profileDisplayName">Your name</h2>
               <p class="profile-email" id="profileDisplayEmail">you@example.com</p>
             </div>
+            <button class="outline-button profile-edit-button" id="profileEdit" type="button">Edit</button>
           </div>
 
           <div class="profile-rows">
             <div class="profile-row">
               <span class="profile-row-label">Name</span>
-              <div class="profile-row-value auth-name-row">
-                <input id="first-name" name="first_name" type="text" autocomplete="given-name" placeholder="First name" required aria-label="First name" />
-                <input id="last-name" name="last_name" type="text" autocomplete="family-name" placeholder="Last name" required aria-label="Last name" />
+              <div class="profile-row-value">
+                <p class="profile-read" id="nameRead">—</p>
+                <div class="profile-edit auth-name-row">
+                  <input id="first-name" name="first_name" type="text" autocomplete="given-name" placeholder="First name" required aria-label="First name" />
+                  <input id="last-name" name="last_name" type="text" autocomplete="family-name" placeholder="Last name" required aria-label="Last name" />
+                </div>
               </div>
             </div>
 
             <div class="profile-row">
               <label class="profile-row-label" for="birthdate">Birthday</label>
               <div class="profile-row-value">
-                <input id="birthdate" name="birthdate" type="date" autocomplete="bday" required />
+                <p class="profile-read" id="birthdateRead">—</p>
+                <div class="profile-edit">
+                  <input id="birthdate" name="birthdate" type="date" autocomplete="bday" required />
+                </div>
               </div>
             </div>
 
             <div class="profile-row">
               <label class="profile-row-label" for="state">State</label>
               <div class="profile-row-value">
-                <select id="state" name="state" required>
-                  <option value="">Select your state</option>
-                </select>
+                <p class="profile-read" id="stateRead">—</p>
+                <div class="profile-edit">
+                  <select id="state" name="state" required>
+                    <option value="">Select your state</option>
+                  </select>
+                </div>
               </div>
             </div>
 
-            <div class="profile-row">
-              <label class="profile-row-label" for="major">Major</label>
+            <div class="profile-row profile-interests-row">
+              <span class="profile-row-label">Major</span>
               <div class="profile-row-value">
-                <select id="major" name="major">
-                  <option value="">Choose a major</option>
-                </select>
+                <p class="profile-read" id="majorRead">—</p>
+                <div class="profile-edit">
+                  <p class="profile-major-edit" id="profileInterests"></p>
+                  <button class="outline-button" id="changeInterests" type="button">Change major</button>
+                </div>
               </div>
             </div>
           </div>
 
-          <button class="auth-submit profile-save" type="submit">Save Change</button>
+          <div class="profile-actions">
+            <button class="auth-submit profile-save" type="submit">Save Change</button>
+            <button class="outline-button profile-cancel" id="profileCancel" type="button">Cancel</button>
+          </div>
           <p class="auth-feedback" id="profileFeedback" aria-live="polite"></p>
         </form>
       </section>
@@ -110,6 +125,7 @@
     <script src="js/supabase-config.js"></script>
     <script src="js/bookmarks.js"></script>
     <script src="js/profile-options.js"></script>
+    <script src="js/interest-picker.js"></script>
     <script src="js/session.js"></script>
     <script src="js/profile.js"></script>
   </body>
