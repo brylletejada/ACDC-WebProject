@@ -87,8 +87,7 @@ function escapeHtml(value) {
 
 function saveButtonMarkup(itemKey, isSaved) {
   const label = isSaved ? "Remove bookmark" : "Save bookmark";
-  const mark = isSaved ? "♥" : "♡";
-  return `<button class="save-button${isSaved ? " saved" : ""}" type="button" data-item-key="${escapeHtml(itemKey)}" aria-label="${label}" aria-pressed="${isSaved}">${mark}</button>`;
+  return `<button class="save-button save-circle${isSaved ? " saved" : ""}" type="button" data-item-key="${escapeHtml(itemKey)}" aria-label="${label}" aria-pressed="${isSaved}"></button>`;
 }
 
 function renderPage() {
@@ -117,10 +116,9 @@ function renderPage() {
   }).join("");
 
   $("#opportunityGrid").innerHTML = major.opportunities.map(item => {
-    const itemKey = buildItemKey(pageKey, "opportunity", item.title);
     return `
-    <article class="opportunity-card" data-item-type="opportunity" data-title="${escapeHtml(item.title)}" data-description="${escapeHtml(item.description)}" data-source-url="${escapeHtml(item.sourceUrl)}">
-      <div class="opp-type"><span>${escapeHtml(item.type)}</span>${saveButtonMarkup(itemKey, savedKeys.has(itemKey))}</div>
+    <article class="opportunity-card">
+      <div class="opp-type"><span>${escapeHtml(item.type)}</span></div>
       <h3>${escapeHtml(item.title)}</h3>
       <p>${escapeHtml(item.description)}</p>
       <a class="source-link" href="${escapeHtml(item.sourceUrl)}" target="_blank" rel="noopener">View ${escapeHtml(item.source)} search ↗</a>
@@ -140,7 +138,6 @@ function setSaveButtonState(button, isSaved) {
   button.classList.toggle("saved", isSaved);
   button.setAttribute("aria-pressed", String(isSaved));
   button.setAttribute("aria-label", isSaved ? "Remove bookmark" : "Save bookmark");
-  button.textContent = isSaved ? "♥" : "♡";
 }
 
 async function toggleBookmark(button) {
