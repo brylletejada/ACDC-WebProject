@@ -35,8 +35,8 @@ button:active, a:active { transform: translateY(1px); }
 .main-nav { display: flex; justify-self: center; align-items: center; gap: 27px; height: 100%; }
 .nav-link { height: 100%; display: flex; align-items: center; color: var(--muted); font-weight: 700; transition: .2s ease; }
 .nav-link:hover { color: var(--purple); }
-.top-actions { min-width: 190px; display: flex; justify-self: end; justify-content: flex-end; align-items: center; gap: 10px; }
-.auth-button { display: inline-flex; align-items: center; justify-content: center; padding: 9px 20px; border: 2px solid #8b3ff0; border-radius: 9px; font-size: 13px; font-weight: 700; white-space: nowrap; transition: .2s ease; }
+.top-actions { min-width: 0; display: flex; flex-wrap: wrap; justify-self: end; justify-content: flex-end; align-items: center; gap: clamp(6px, .8vw, 10px); }
+.auth-button { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; padding: 8px clamp(8px, 1.6vw, 20px); border: 2px solid #8b3ff0; border-radius: 9px; font-size: clamp(12px, 1.1vw, 15px); font-weight: 700; white-space: nowrap; transition: .2s ease; }
 .auth-button-primary { color: var(--white); background: #8b3ff0; }
 .auth-button-primary:hover { background: var(--purple); border-color: var(--purple); }
 .auth-button-outline { color: #8b3ff0; background: var(--white); }
@@ -265,7 +265,7 @@ h1, h2, h3 { text-transform: uppercase; }
 /* ACDC-inspired about, goal, call-to-action, and footer sections */
 .topbar { min-height: 100px; height: 100px; }
 .brand { min-width: 0; max-width: 100%; }
-.brand-logo { width: auto; height: 64px; max-width: 280px; object-fit: contain; }
+.brand-logo { width: auto; height: clamp(40px, 6vw, 64px); max-width: min(280px, 42vw); object-fit: contain; }
 .hero-logo { width: 290px; height: 290px; }
 .major-hero-logo { width: 275px; height: 275px; }
 
@@ -368,7 +368,6 @@ h1, h2, h3 { text-transform: uppercase; }
 
 @media (max-width: 740px) {
   .topbar { min-height: 88px; height: auto; }
-  .brand-logo { width: auto; height: 48px; max-width: min(220px, 46vw); }
   .major-home-hero .hero-logo { width: 220px; height: 220px; }
   .about-us-section { display: block; padding-top: 58px; padding-bottom: 58px; }
   .about-visual { min-height: 0; margin-top: 30px; }
@@ -496,8 +495,7 @@ body.interest-open { overflow: hidden; }
 @media (max-width: 1024px) {
   .topbar { gap: 18px; padding-right: 28px; padding-left: 28px; }
   .main-nav { gap: clamp(10px, 1.6vw, 18px); }
-  .top-actions { min-width: 0; gap: 8px; }
-  .auth-button { padding-right: 14px; padding-left: 14px; }
+  .top-actions { min-width: 0; }
   .footer-grid { gap: 30px; }
 }
 
@@ -517,12 +515,8 @@ body.interest-open { overflow: hidden; }
 
 @media (max-width: 740px) {
   .topbar { grid-template-columns: minmax(0, 1fr) auto; padding: 10px 18px; gap: 10px 14px; }
-  .brand-logo { width: auto; height: 42px; max-width: min(190px, 48vw); }
   .main-nav { grid-column: 1 / -1; width: 100%; height: auto; min-height: 44px; flex-wrap: wrap; justify-content: center; gap: 0 22px; overflow: visible; }
   .nav-link { min-height: 44px; }
-  .top-actions { gap: 8px; }
-  .auth-button { min-height: 44px; padding: 8px 12px; }
-
   .hero { min-height: 0; padding: 46px 20px 52px; }
   .hero-art { display: none; }
   .hero h1 { font-size: clamp(38px, 11vw, 51px); }
@@ -567,9 +561,6 @@ body.interest-open { overflow: hidden; }
 
 @media (max-width: 480px) {
   .topbar { padding-right: 14px; padding-left: 14px; }
-  .brand-logo { height: 36px; max-width: min(156px, 46vw); }
-  .top-actions { gap: 6px; }
-  .auth-button { padding-right: 9px; padding-left: 9px; font-size: 12px; }
   .main-nav { gap: 18px; }
   .hero { padding-right: 18px; padding-left: 18px; }
   .hero-tags { line-height: 2; }
