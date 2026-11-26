@@ -1,0 +1,23 @@
+YOUR NAME
+IT Student | Target role
+
+email@example.com | (000) 000-0000 | City, State | github.com/your-username
+
+TECHNICAL SKILLS
+List tools you can explain in an interview.
+
+PROJECTS
+Project name (tools)
+- What you built, the tools you used, and the result.
+
+EXPERIENCE
+Role, Organization
+Dates, newest first
+- The task you did and what changed because of it.
+
+EDUCATION
+Program or school
+City
+
+CERTIFICATIONS
+Add a certification only if you have it or it is in progress.
