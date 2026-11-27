@@ -11,7 +11,7 @@ const majorData = {
     ],
     resources: [
       { icon: "▤", title: "IT resume starter", text: "Show technical skills clearly on your first resume.", href: "it-resume.html", save: false },
-      { icon: "⌘", title: "Cybersecurity basics", text: "Review simple security terms and safe practices." },
+      { icon: "⌘", title: "Cybersecurity basics", text: "Review simple security terms and safe practices.", href: "cybersecurity-basics.html", save: false },
       { icon: "◌", title: "Networking vocabulary", text: "Practice common words used in IT support and networks." },
       { icon: "✦", title: "Technical interview practice", text: "Build confidence before an IT interview." }
     ],
