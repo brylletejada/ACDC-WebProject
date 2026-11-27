@@ -10,7 +10,7 @@ const majorData = {
       { icon: "☁", title: "Cloud services", text: "Build a basic understanding of cloud platforms and hosted services.", meta: ["2 courses", "5 weeks"] }
     ],
     resources: [
-      { icon: "▤", title: "IT resume starter", text: "Show technical skills clearly on your first resume." },
+      { icon: "▤", title: "IT resume starter", text: "Show technical skills clearly on your first resume.", href: "it-resume.html", save: false },
       { icon: "⌘", title: "Cybersecurity basics", text: "Review simple security terms and safe practices." },
       { icon: "◌", title: "Networking vocabulary", text: "Practice common words used in IT support and networks." },
       { icon: "✦", title: "Technical interview practice", text: "Build confidence before an IT interview." }
@@ -107,12 +107,15 @@ function renderPage() {
 
   $("#resourceList").innerHTML = major.resources.map(item => {
     const itemKey = buildItemKey(pageKey, "resource", item.title);
-    return `
-    <article class="resource-item" data-item-type="resource" data-title="${escapeHtml(item.title)}" data-description="${escapeHtml(item.text)}">
+    const save = item.save === false ? "" : saveButtonMarkup(itemKey, savedKeys.has(itemKey));
+    const inner = `
       <span class="resource-thumb">${item.icon}</span>
       <div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></div>
-      ${saveButtonMarkup(itemKey, savedKeys.has(itemKey))}
-    </article>`;
+      ${save}`;
+    if (item.href) {
+      return `<a class="resource-item resource-link" href="${escapeHtml(item.href)}">${inner}</a>`;
+    }
+    return `<article class="resource-item" data-item-type="resource" data-title="${escapeHtml(item.title)}" data-description="${escapeHtml(item.text)}">${inner}</article>`;
   }).join("");
 
   $("#opportunityGrid").innerHTML = major.opportunities.map(item => {
