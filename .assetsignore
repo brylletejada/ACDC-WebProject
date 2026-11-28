@@ -7,6 +7,8 @@ wrangler.toml
 .git/
 .wrangler/
 node_modules/
+.env
+.env.*
 package.json
 package-lock.json
 database/
